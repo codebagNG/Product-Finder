@@ -17,7 +17,7 @@
                         <!-- Example Bordered Table -->
                         <div class="example-wrap">
 						<?php if (isset($products) && !empty($products)) : ?>
-                            <h4 class="example-title">Product List Table</h4>
+                            <h4 class="example-title"><?=$username?></h4>
                             <div class="example table-responsive">
                                 <!--
                                  <div class="alert alert-success alert-dismissible" role="alert">
@@ -28,8 +28,9 @@
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th>Seller</th>
+                                        
                                         <th>Product Name</th>
+										<th>Category</th>
                                         <th>Date Posted</th>
                                         <th class="text-nowrap">Action</th>
                                     </tr>
@@ -37,8 +38,9 @@
                                     <tbody>
                                     <?php foreach ($products as $product) : ?>
 									<tr>
-                                        <td><?= $product->seller ?></td>
-                                        <td><a href = "https://<?= $product->product_link ?>" target="_blank" > <?= $product->name ?> </a> </td>
+                                        
+                                        <td><a href = "<?= $product->product_link ?>" > <?= $product->name ?> </a> </td>
+										<td><?= $this->product_model->get_category($product->category) ?></td>
                                         <td><?= $product->created_at ?></td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-icon btn-flat btn-default" data-toggle="tooltip"
@@ -49,30 +51,19 @@
                                                     data-original-title="Edit">
                                                 <a href="" ><i class="icon wb-edit" aria-hidden="true"></i></a>
                                             </button>
+											<?php if($_SESSION['is_admin']=== true || $username === $_SESSION['username']): ?>
                                             <a href="<?= base_url('/product/delete_product/'.$product->id) ?>">
 											<button type="button"  data-toggle="modal" class="btn btn-sm btn-icon btn-flat btn-default" data-toggle="tooltip"
 											data-original-title="Delete">
 												<i class="icon wb-close" aria-hidden="true"></i>
 											</button>
 											</a>
+											<?php endif; ?>
                                         </td>
                                     </tr>
                                     
 									<?php endforeach; ?>
-									<div class="pagination">
-									<?php
-										$next_page = ($this_page + 1 <= $total_pages) ?  $this_page + 1 : "";
-										
-										if ($this_page == 1){
-											echo sprintf('<strong>1</strong> 2 <a href = "./%u" > > </a>',$next_page );
-										}else if($this_page == $total_pages){
-											echo sprintf('<a href = "./%u" > < </a> %u <strong>%u</strong> ',$this_page - 1, $this_page - 1, $this_page );
-										}else {
-											echo sprintf('<a href = "./%u" > < </a> %u <strong>%u</strong> %u <a href = "./%u" > > </a>',$this_page-1, $this_page - 1, $this_page, $this_page+1, $this_page+1);
-										}
-
-									?>
-									</div>									
+									
 									<?php else : ?>
 										<h4>No Products yet</h4>
 									<?php endif; ?>

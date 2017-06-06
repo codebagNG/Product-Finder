@@ -20,18 +20,25 @@
     <section class="blog-masonry bg-muted">
 
         <div class="container">
+		
             <div class="row">
+			
                 <div class="blog-masonry-container">
-
-                    <div class="col-md-6 col-sm-6 blog-masonry-item branding">
+				<?php foreach ($products as $product) : ?>
+                    <div class="col-md-4 col-sm-4 blog-masonry-item branding">
                         <div class="item-inner">
                             <a href="blog-single.html">
-                                <img alt="Blog Preview" src="<?= base_url('/public/assets/img/blog-masonry-1.jpg') ?>">
+                                <img alt="Produt Image" src="<?= base_url('/images/'.$product->product_image) ?>" width="600" height="400">
                             </a>
                             <div class="post-title">
-                                <h2>Layout out my writing gear as though I'll use it.</h2>
+                                <h2><a href = "https://<?= $product->product_link ?>" target="_blank" > <?= $product->name ?> </a>
+								</h2>
+								
                                 <p>
-                                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis.
+								<h6><?= $product->price ?>USD </h6>
+                                    Category: <?= $this->product_model->get_category($product->category) ?> </br>
+									Condition: <?= ($product->product_state == 1 ? "New": ($product->product_state == 2 ? "Fairly Used": "In Good Condition")) ?> </br>
+									Quantity: <?= $product->quantity ?> </br>
                                 </p>
                                 <div class="post-meta">
                                     <span class="sub alt-font">Posted on June 16th</span>
@@ -41,9 +48,11 @@
                             </div>
                         </div>
                     </div><!--end of individual post-->
-
+					<?php endforeach; ?>
                 </div><!--end of blog masonry container-->
+				
             </div><!--end of row-->
+			
         </div><!--end of container-->
 
 

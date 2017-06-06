@@ -6,8 +6,29 @@ class User extends CI_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->library(array('session'));
-		$this->load->model('user_model');
+		$this->load->model(array('user_model','product_model'));
 		$this->load->library('form_validation');
+	}
+	
+	public function index($username = false){
+		$data = new stdClass();
+		
+
+		if ($username == false ){
+			if (!isset($_SESSION['username'])){
+				//not logged in and wants to check his profile
+				show_404();
+			}else{
+				$data->username = $_SESSION['username'];
+			}
+		}else{
+			$data->username = $username;
+		}
+		$data->products = $this->product_model->get_user_product($this->user_model->get_user_id_from_username($data->username));
+		
+		$this->load->view('header2');
+		$this->load->view('user/dashboard3', $data);
+		$this->load->view('footer2');
 	}
 	
 	public function register(){
@@ -92,12 +113,13 @@ class User extends CI_Controller {
 				$_SESSION['username']     = (string)$user->username;
 				$_SESSION['logged_in']    = (bool)true;
 				//$_SESSION['is_confirmed'] = (bool)$user->is_confirmed;
-				//$_SESSION['is_admin']     = (bool)$user->is_admin;
+				$_SESSION['is_admin']     = (bool)$user->is_admin;
 				
 				// user login ok
-				$this->load->view('header');
-				$this->load->view('user/dashboard', $data);
-				$this->load->view('footer');
+				// $this->load->view('header');
+				// $this->load->view('user/dashboard', $data);
+				// $this->load->view('footer');
+				redirect('./product/index');
 				
 			} else {
 				
@@ -140,9 +162,56 @@ class User extends CI_Controller {
 		
 	}
 	
-	public function tests(){
-		$this->load->view('header');
-		$this->load->view('user/create_product');
-		$this->load->view('footer');
+	public function tests($id){
+		// $this->load->view('header');
+		// $this->load->view('user/create_product');
+		// $this->load->view('footer');
+		echo $id;
 	}
+	
+	public function edit_profile(){
+		// create the data object
+		$data = new stdClass();
+		
+		if (isset($_SESSION['logged_in']) && $_SESSION['logged_in'] === true) {
+			
+			$this->load->helper('form');
+		
+			
+			$this->form_validation->set_rules('name', 'Name', 'trim|required|alpha_numeric_spaces|min_length[4]|max_length[40]');
+			$this->form_validation->set_rules('username', 'Username', 'trim|required|alpha_numeric|min_length[4]|max_length[20]');
+			$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
+			$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[6]');
+			
+			
+			if ($this->form_validation->run() === false){
+				
+				$user = $this->user_model->get_user($_SESSION['user_id']);
+				// echo($user->username);
+				$data->name = $user->name;
+				$data->username = $user->username;
+				$data->email = $user->email;
+				
+				$this->load->view('header');
+				$this->load->view('user/edit_profile', $data);
+				$this->load->view('footer');
+			}else{
+				$username = $this->input->post('username');
+				$email = $this->input->post('email');
+				$name = $this->input->post('name');
+			//  ### TODO: check if user changed his username or email
+				
+				
+			
+			
+			
+			}
+		}else{
+			show_404();
+		}
+	
+		
+	}
+	
+	
 }

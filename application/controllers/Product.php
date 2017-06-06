@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Product extends CI_Controller{
 	
-				private $data = array();
+	private $data = array();
 
 	public function __construct(){
 		
@@ -43,7 +43,7 @@ class Product extends CI_Controller{
 			$data->this_page = (int)$page;
 		}
 		$data->the_page = $data->this_page*10 - 10;
-		$products = $this->product_model->test($data->the_page);
+		$products = $this->product_model->get_products_from($data->the_page);
 		//$products = $this->product_model->get_products();
 		foreach ($products as $product) {
 			$product->seller = $this->user_model->get_username_from_user_id($product->owner_id);
@@ -52,9 +52,9 @@ class Product extends CI_Controller{
 		$data->products = $products;		
 		$data->total_pages = ceil($this->product_model->get_total_products() / 10);
 		
-		$this->load->view('header2');
-		$this->load->view('/user/dashboard2', $data);
-		$this->load->view('footer2');
+		$this->load->view('header');
+		$this->load->view('/user/home', $data);
+		$this->load->view('footer');
 		
 		
 		
@@ -114,9 +114,10 @@ class Product extends CI_Controller{
 					'name' => $this->input->post('name'),
 					'owner_id' => $_SESSION['user_id'],
 					'category' => $this->input->post('category'),
+					'price' => $this->input->post('price'),
 					'product_state' => $this->input->post('product_state'),
 					'quantity' => $this->input->post('quantity'),
-					'link' => $this->input->post('link'),
+					'product_link' => $this->input->post('link'),
 					'product_image' => $this->upload->data('file_name'),
 					'description' => $this->input->post('about'),
 					);
@@ -150,7 +151,6 @@ class Product extends CI_Controller{
 		
 	}
 	
-
 	public function create_category(){
 		
 		$data = new stdClass();
@@ -162,16 +162,29 @@ class Product extends CI_Controller{
 		}
 	}
 	
-	public function test(){
-		$products = $this->product_model->get_products();
-		foreach ($products as $product){
-			echo($product->name);
-			echo("</br>");
-		}
+	public function tests($id){
+		// $products = $this->product_model->get_products();
+		// foreach ($products as $product){
+			// echo($product->name);
+			// echo("</br>");
+		// }
+		$products = $this->product_model->get_user_product($id);
+		var_dump($products);
 	}
 
+	public function delete_product($product_id){
+		$username = $this->user_model->get_username_from_user_id($this->product_model->get_product_seller_id($product_id));
+		if ($_SESSION['is_admin'] !== true || !isset($_SESSION['username']) || $username !== $_SESSION['username']){	//not admin not logged in or not the owner of the product
+			show_404();
+		}else{
+			if($this->product_model->delete_product($product_id)){
+				redirect('./product/index');
+			}
+		}
+		//echo "Scrupulous".$this->user_model->get_username_from_user_id($this->product_model->get_product_seller_id('2'));
+	}
 
-
+	
 	
 }
 	

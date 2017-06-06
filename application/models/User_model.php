@@ -76,7 +76,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			
 		}
 		
-				
+		public function update_user($user_id, $update_data){
+			$this->db->select('password');
+			$this->db->from('users');
+			$this->db->where('id', $user_id);
+			$hash = $this->db->get()->row('password');
+			
+			if ($this->verify_password_hash($update_data->password, $hash)){
+				$this->db->where('id', $user_id);
+				return $this->db->update('users', $update_data);
+			}
+			return false;
+		}
+		
 		private function hash_password($password) {
 		
 			return password_hash($password, PASSWORD_BCRYPT);
@@ -125,6 +137,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			return $this->email->send();
 			
 		}
-	
+		
+		
+		
 	}
 ?>

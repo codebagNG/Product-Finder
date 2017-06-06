@@ -65,9 +65,14 @@
 										
                                     </div>
                                     <div class="row">
-									<div class="form-group col-sm-12">
+									<div class="form-group col-sm-8">
 										<label class="control-label">Add Images </label>
 										<input type="file" name="userfile" id="userfile" class="form-control" accept="image/*" />
+										
+									</div>
+									<div class="form-group col-sm-4">
+										<label class="control-label">Price </label>
+										<input type="number" class="form-control"  name="price"  min="1" max="1000000" step="10"   value="1000"  />
 										
 									</div>
 									
