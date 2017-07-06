@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Product extends CI_Controller{
 	
-	private $data = array();
+	//private $data = array();
 
 	public function __construct(){
 		
@@ -14,28 +14,12 @@ class Product extends CI_Controller{
 		
 
 	}
+
 	public function index($page = false){
 		// create the data object
 		$data = new stdClass();
 		
-		/*if ($page === false) {
-			
-			//$products = $this->product_model->get_products();
-			$products = $this->product_model->test('2');
-			foreach ($products as $product) {
-				//$product->permalink = "";
-				//$product->created_at = "10";
-				
-				//$product->name = 
-			}
-			$data->products = $products;
-			
-			$this->load->view('header2');
-			$this->load->view('/user/dashboard2', $data);
-			$this->load->view('footer2');
-			
-		}*/
-		
+		$data->title = "Products";
 		
 		if ($page === false || $page < 1 ){
 			$data->this_page = 1;
@@ -52,7 +36,7 @@ class Product extends CI_Controller{
 		$data->products = $products;		
 		$data->total_pages = ceil($this->product_model->get_total_products() / 10);
 		
-		$this->load->view('header');
+		$this->load->view('header', $data);
 		$this->load->view('/user/home', $data);
 		$this->load->view('footer');
 		
@@ -184,8 +168,34 @@ class Product extends CI_Controller{
 		//echo "Scrupulous".$this->user_model->get_username_from_user_id($this->product_model->get_product_seller_id('2'));
 	}
 
+	public function edit_product(){
+		
+	}
 	
+	public function view($product_id = false){
+		$data = new stdClass();
+		if ($product_id === false){
+			redirect('/product/index');
+		} else {
+			
+			$data->product = $this->product_model->get_product($product_id);
+			if  ($data->product === null){
+				show_404();
+			}else{
+				$data->title = 'Details';
+				$this->load->view('header', $data);
+				$this->load->view('/user/product_view', $data);
+				$this->load->view('footer');
+			}
+		}
+	}
 	
+	public function category($category = false){
+		$data = new stdClass();
+		if ($category === false){
+			$data->categories  = $this->product_model->get_categories();
+		}
+	}
 }
 	
 

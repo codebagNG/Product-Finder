@@ -5,6 +5,7 @@ class Product_model extends CI_Model {
 		parent::__construct();
 		$this->load->database();
 	}
+
 	public function create_product($product){
 		return $this->db->insert('products', $product);
 		
@@ -28,7 +29,7 @@ class Product_model extends CI_Model {
 	
 	public function get_product($id) {
 	
-		$this->db->from('users');
+		$this->db->from('products');
 		$this->db->where('id', $id);
 		return $this->db->get()->row();
 		

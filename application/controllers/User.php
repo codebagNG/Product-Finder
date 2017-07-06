@@ -5,9 +5,9 @@ class User extends CI_Controller {
 	
 	public function __construct(){
 		parent::__construct();
-		$this->load->library(array('session'));
+		$this->load->library(array('session','form_validation'));
 		$this->load->model(array('user_model','product_model'));
-		$this->load->library('form_validation');
+
 	}
 	
 	public function index($username = false){
@@ -212,6 +212,17 @@ class User extends CI_Controller {
 	
 		
 	}
+
+    public function show_error($error){
+        $data = new stdClass();
+
+        $data->error = str_replace("%20", " ", $error);
+        $data->title = "Error";
+
+        $this->load->view('header',$data);
+        $this->load->view('/errors/error_page',$data);
+        $this->load->view('footer');
+    }
 	
 	
 }

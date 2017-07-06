@@ -61,6 +61,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			
 		}
 		
+		public function get_name_from_user_id($user_id) {
+		
+			$this->db->select('name');
+			$this->db->from('users');
+			$this->db->where('id', $user_id);
+
+			return $this->db->get()->row('name');
+			
+		}
+		
 		public function get_user($user_id) {
 		
 			$this->db->from('users');
@@ -88,8 +98,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 			return false;
 		}
-		
-		private function hash_password($password) {
+
+		public function delete_user($id){
+            $this->db->where('id', $id);
+            return $this->db->delete('users');
+        }
+
+        private function hash_password($password) {
 		
 			return password_hash($password, PASSWORD_BCRYPT);
 		

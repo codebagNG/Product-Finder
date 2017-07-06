@@ -126,7 +126,7 @@
                 <li class="dropdown">
                     <a style="text-transform: capitalize;" data-toggle="dropdown" href="javascript:void(0)" title="Notifications" aria-expanded="false"
                        data-animation="scale-up" role="button">
-                        Hello Blogger's name
+                        Hello <?=(isset($_SESSION['username']) ? $_SESSION['username'] : "Guest")?>
                     </a>
 
                 </li>
@@ -222,12 +222,33 @@
                                 </a>
                             </li>
                             <li class="site-menu-item">
-                                <a class="animsition-link" href="view-blog.html">
-                                    <span class="site-menu-title">View Posts</span>
+                                <a class="animsition-link" href="<?= base_url('/product')?>">
+                                    <span class="site-menu-title">View Products</span>
                                 </a>
                             </li>
                         </ul>
                     </li>
+                    <?php if ($_SESSION['is_admin'] === true) : ?>
+                        <li class="site-menu-item has-sub active ">
+                            <a href="javascript:void(0)">
+                                <i class="site-menu-icon wb-grid-4" aria-hidden="true"></i>
+                                <span class="site-menu-title">Admin</span>
+                                <span class="site-menu-arrow"></span>
+                            </a>
+                            <ul class="site-menu-sub">
+                                <li class="site-menu-item">
+                                    <a class="animsition-link" href="<?= base_url('/admin/list_products')?>">
+                                        <span class="site-menu-title">Manage Products</span>
+                                    </a>
+                                </li>
+                                <li class="site-menu-item">
+                                    <a class="animsition-link" href="<?= base_url('/admin/list_users')?>">
+                                        <span class="site-menu-title">Manage Users</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    <?php endif; ?>
 
                 </ul>
 

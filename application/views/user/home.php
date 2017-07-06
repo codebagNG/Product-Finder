@@ -9,8 +9,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 text-center">
-                    <span class="text-white alt-font">news &amp; Views&nbsp;</span>
-                    <h1 class="text-white">Read and Get Fulfilled</h1>
+                    <span class="text-white alt-font">Latest Products&nbsp;</span>
+                    <h1 class="text-white">Check here for best deals</h1>
 
                 </div>
             </div><!--end of row-->
@@ -41,10 +41,10 @@
 									Quantity: <?= $product->quantity ?> </br>
                                 </p>
                                 <div class="post-meta">
-                                    <span class="sub alt-font">Posted on June 16th</span>
-                                    <span class="sub alt-font">4 Minute Read</span>
+                                    <span class="sub alt-font">Posted on </span>
+                                    <span class="sub alt-font"><?= $product->created_at ?></span>
                                 </div>
-                                <a href="blog-single.html" class="link-text">Read More</a>
+                                <a href="view/<?= $product->id ?>" class="link-text">Read More</a>
                             </div>
                         </div>
                     </div><!--end of individual post-->

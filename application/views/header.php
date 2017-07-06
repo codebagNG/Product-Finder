@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Mini-Medium Blog | Login</title>
+    <title><?= $title ?></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,7 +18,7 @@
     <link href="<?= base_url('/public/assets/css/bootstrap.min.css') ?>" rel="stylesheet" type="text/css" media="all"/>
     <link href="<?= base_url('/public/assets/css/theme.css') ?>" rel="stylesheet" type="text/css" media="all"/>
     <!--[if gte IE 9]>
-    <link rel="stylesheet" type="text/css" href="<? = base_url('/public/assets/css/ie9.css') ?>" />
+    <link rel="stylesheet" type="text/css" href="<?= base_url('/public/assets/css/ie9.css') ?>" />
     <![endif]-->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,400,300,600,700%7CRaleway:700' rel='stylesheet' type='text/css'>
     <script src="<?= base_url('/public/assets/js/modernizr-2.6.2-respond-1.1.0.min.js') ?>"></script>
@@ -40,12 +40,12 @@
                 <div class="col-sm-9 col-md-10 columns">
                     <ul class="menu">
                         <li><a href="<?= base_url() ?>">Home</a></li>
-                        <li><a  href="<?= base_url('products') ?>">Products</a></li>
+                        <li><a  href="<?= base_url('product') ?>">Products</a></li>
 						<?php if (isset($_SESSION['username']) && $_SESSION['logged_in'] === true) : ?>
-							<!-- <?php if ($_SESSION['is_admin'] === true) : ?>
+							<?php if ($_SESSION['is_admin'] === true) : ?>
 								<li><a href="<?= base_url('admin') ?>">Admin</a></li>
-							<?php endif; ?> -->
-							<li><a href="<?= base_url('user/' . $_SESSION['username']) ?>">Profile</a></li>
+							<?php endif; ?>
+							<li><a href="<?= base_url('user/index/' . $_SESSION['username']) ?>">Profile</a></li>
 							<li><a href="<?= base_url('user/logout') ?>">Logout</a></li>
 						<?php else : ?>
 							<li><a href="<?= base_url('user/login') ?>">Login</a></li>
